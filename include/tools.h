@@ -16,26 +16,21 @@
  * RANDOM NUMBERS
  *****************************************/
 
+//TODO przydaloby sie zrobic to na jakims Mersen-Twister abo cos pdobnego
 double frand();
 
 /******************************************************
  * Funkcje pomocnicze przy obliczeniach na std::vector
  * ****************************************************/
-
 int is_equal(std::vector <int>  &w, std::vector < int> &v);
 int is_opposite(std::vector <int>  &w, std::vector < int> &v);
 double get_square_distance( std::vector <int>  &w, std::vector < int> &v );
 double get_distance(std::vector <int>  &w, std::vector < int> &v);
-std::vector<int> add(std::vector <int>  &w, std::vector <int> &v);
-std::vector<int> diff(std::vector <int>  &w, std::vector <int> &v);
-double dot(std::vector <int>  &w, std::vector <int> &v);
 
-/*****************************************
- * print vectora dla debuga
- * powinien byc template, ale nie pamietalem 
- * jak to lecialo :-)
- * **************************************/
-void show_vector(std::vector <double>  &w, std::string str);
-void show_vector(std::vector <int>  &w, std::string str);
+//ze wzgledu na szybkosc(?) wynik jest umieszcany w wektorze wrzuconym przez referencje
+void add(std::vector <int>  const &w, std::vector <int> const &v, std::vector <int> &result);
+void diff(std::vector <int>  const &w, std::vector <int> const &v, std::vector <int> &result);
+
+double dot(std::vector <int>  &w, std::vector <int> &v);
 
 #endif
