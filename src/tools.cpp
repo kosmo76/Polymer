@@ -16,14 +16,14 @@ double frand()
    return std::rand()/(RAND_MAX+1.0);
 }
 
-/*******************************************
- * Funkcje pomocne przy liczeniu wsp
- * **************************************/
+/**************************************************
+ * Funkcje pomocne przy obliczeniach na vectorach
+ * ***********************************************/
 
-int is_equal( std::vector <int>  &w, std::vector < int> &v)
+int is_equal( const std::vector <int>  &w, const std::vector < int> &v)
 {
-    if ( w.size() != v.size() )
-        return 0;
+    if ( w.size() != v.size())
+        throw "Wrong vector size";
     
     for(int i=0; i < w.size(); i++)
     {
@@ -31,15 +31,14 @@ int is_equal( std::vector <int>  &w, std::vector < int> &v)
           return 0;
     }
     
-    return 1;
-    
+    return 1;    
 }
 
-int is_opposite(std::vector <int>  &w, std::vector < int> &v)
+int is_opposite(const std::vector <int>  &w, const std::vector < int> &v)
 {
-    if ( w.size() != v.size() )
-        return 0;
-    
+    if ( w.size() != v.size())
+        throw "Wrong vector size";
+        
     for(int i=0; i< w.size(); i++)
     {
       if ( w.at(i) != -1*v.at(i))
@@ -47,11 +46,13 @@ int is_opposite(std::vector <int>  &w, std::vector < int> &v)
     }
     
     return 1;
-    
 }
 
-double get_square_distance( std::vector <int>  &w, std::vector < int> &v )
+double get_square_distance( const std::vector <int>  &w, const std::vector < int> &v )
 {
+  if ( w.size() != v.size())
+        throw "Wrong vector size";
+
   double sum = 0;
   double dx;
   for(int i=0; i<w.size(); i++)
@@ -63,28 +64,15 @@ double get_square_distance( std::vector <int>  &w, std::vector < int> &v )
   return sum;
 }
 
-double get_distance(std::vector <int>  &w, std::vector < int> &v)
+double get_distance(const std::vector <int>  &w, const std::vector < int> &v)
 {
+    if ( w.size() != v.size())
+        throw "Wrong vector size";
+    
    return std::sqrt(get_square_distance(w, v));
 }
 
-void add(std::vector <int>  const &w, std::vector <int> const &v, std::vector <int> &tmp)
-{
-    for(int i=0; i<w.size(); i++)
-    {
-      tmp[i] =  w.at(i) + v.at(i);
-    }
-}
-
-void diff(std::vector <int>  const &w, std::vector <int> const &v, std::vector <int> &tmp)
-{
-    for(int i=0; i<w.size(); i++)
-    {
-      tmp[i] =  w.at(i) - v.at(i);
-    }
-}
-
-double dot(std::vector <int>  &w, std::vector <int> &v)
+double dot(const std::vector <int>  &w, const std::vector <int> &v)
 {
   double sum = 0;
   for(int i=0; i< w.size(); i++)
@@ -92,4 +80,23 @@ double dot(std::vector <int>  &w, std::vector <int> &v)
   return sum;
 }
 
+void add(const std::vector <int>  &w, const std::vector <int> &v, std::vector <int> &tmp)
+{
+    if ( w.size() != v.size() or w.size() != tmp.size())
+        throw "Wrong vector size";
+    for(int i=0; i<w.size(); i++)
+    {
+      tmp[i] =  w.at(i) + v.at(i);
+    }    
+}
 
+void diff(const std::vector <int>  &w, const std::vector <int> &v, std::vector <int> &tmp)
+{ 
+    if ( w.size() != v.size() or w.size() != tmp.size())
+        throw "Wrong vector size";
+    
+    for(int i=0; i<w.size(); i++)
+    {
+      tmp[i] =  w.at(i) - v.at(i);
+    }
+}
