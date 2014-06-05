@@ -114,7 +114,6 @@ public:
      * 
      * \return wskaźnik do stałego wektora pozycji
      * 
-     * \todo Sprawdzić czy nie można czasem podmienić wartości współrzędnej, bo może to int też musi być stałe
      */
     const std::vector < std::vector <int> > * get_reptons_positions();
     
@@ -279,6 +278,8 @@ public:
      * \return  0 - nie udało się przekopiować, 1 - przekopiowano.
      */
     int copy_data(Polymer &p);
+    
+    
    
 private:
     int dim;    //! Wymiarowość systemu

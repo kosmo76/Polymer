@@ -8,30 +8,39 @@ Polymer::Polymer(int nreptons, int dim)
 {
     this->dim = dim;
     this->nreptons=nreptons;
+    //ustaw tymczasowy wektor
+    this->tmp.assign(dim,0);
+    
     vector <int> pos(dim,0);
+    //ustaw pozycje retonow na 0
     for(int i=0; i<nreptons; i++)
         this->positions.push_back(pos);
     
-    this->tmp.assign(dim,0);
-    //ustaw linki na zera
+    //ustaw linki na 0
     for(int i=0; i<nreptons-1; i++)
         this->links.push_back(pos);
+    
+    
 }
 
 Polymer::Polymer(string repr, int dim)
 {
     this->dim = dim;
     this->nreptons = repr.size()+1;
+    
+    //wyzeruj wektor  tymczasowy
+    this->tmp.assign(dim,0);
+    
     vector <int> pos(dim,0);
     for(int i=0; i<nreptons; i++)
         this->positions.push_back(pos);
-    set_from_representation(repr);
     
-    this->tmp.assign(dim,0);
-    //ustaw linki na zera
+    set_from_representation(repr);
+    //wypelnij  wektor linkow
     for(int i=0; i<nreptons-1; i++)
         this->links.push_back(pos);
-     
+    //policz wektory linkow dla aktualnej konfiguracji
+    calculate_links();
 }
 
 int Polymer::get_dim()
@@ -114,10 +123,10 @@ int Polymer::check_integrity()
   return 1;                         
 }
 
-vector<int> * Polymer::get_repton_position(int idx)
+const vector<int> * Polymer::get_repton_position(int idx)
 { return & this->positions.at(idx); }
 
-vector < vector <int> > * Polymer::get_reptons_positions()
+const vector < vector <int> > * Polymer::get_reptons_positions()
 { return & this->positions; }
 
 void Polymer::set_repton_position( int idx, vector<int> const & pos)
@@ -126,17 +135,21 @@ void Polymer::set_repton_position( int idx, vector<int> const & pos)
         this->positions[idx][i] = pos[i]; 
 }
 
-std::vector<int> Polymer::get_link_vector(int link_number)
+const std::vector<int> * Polymer::get_link_vector(int link_number)
 {
-    diff(positions.at(link_number+1), positions.at(link_number), tmp);
-    return tmp;
+    return & this->links.at(link_number);
+//     diff(positions.at(link_number+1), positions.at(link_number), tmp);
+//     return tmp;
 }
+
 
 void Polymer::calculate_links()
 {
     for(int i=0; i<this->get_nlinks(); i++)
-        links.at(i) = this->get_link_vector(i);
-    
+    {
+        diff(positions.at(i+1), positions.at(i), tmp);
+        links.at(i) = tmp;
+    }
 }
 
 void Polymer::update_links(int repton_idx)
@@ -152,57 +165,47 @@ void Polymer::update_links(int repton_idx)
         end = get_nlinks() - 1;
         
     for(int i=start; i<=end; i++)
-    {
-     links.at(i) = this->get_link_vector(i);     
+    { 
+        diff(positions.at(i+1), positions.at(i), tmp);
+        links.at(i) = tmp;     
     }
 }
 
-std::vector< std::vector <int> > Polymer::get_links_vectors()
+const std::vector< std::vector <int> > * Polymer::get_links_vectors()
 {
-    calculate_links();
- /*   for(int i=0; i<this->get_nlinks(); i++)
-        links.at(i) = this->get_link_vector(i);
- */   
-    return links;
+    return & links;
 }
-
-std::vector< std::vector <int> > * Polymer::get_links_vectors_as_pointer()
-{ 
-    //calculate_links();
-    return &links; }
     
 
 char Polymer::get_link_symbol(int link_number)
 {
-    diff(positions.at(link_number+1), positions.at(link_number), tmp);
-    
     if (dim == 1)
      {
-        if ( tmp.at(0) == 0 )
+        if ( links.at(link_number).at(0) == 0 )
             return 's';
         
-        if ( tmp.at(0) == 1 )
+        if ( links.at(link_number).at(0) == 1 )
             return 'r';
         
-        if ( tmp.at(0) == -1 )
+        if ( links.at(link_number).at(0) == -1 )
             return 'l';
      }
     
      if (dim == 2)
      {
-        if ( tmp.at(0) == 0 and tmp.at(1) == 0)
+        if ( links.at(link_number).at(0) == 0 and links.at(link_number).at(1) == 0)
             return 's';
         
-        if ( tmp.at(0) == 0 and tmp.at(1) == 1 )
+        if ( links.at(link_number).at(0) == 0 and links.at(link_number).at(1) == 1 )
             return 'u';
         
-        if ( tmp.at(0) == 1 and tmp.at(1) == 0)
+        if ( links.at(link_number).at(0) == 1 and links.at(link_number).at(1) == 0)
             return 'r';
         
-        if ( tmp.at(0) == 0 and tmp.at(1) == -1)
+        if ( links.at(link_number).at(0) == 0 and links.at(link_number).at(1) == -1)
             return 'd';
         
-        if ( tmp.at(0) == -1 and tmp.at(1) == 0)
+        if ( links.at(link_number).at(0) == -1 and links.at(link_number).at(1) == 0)
             return 'l';
      }
 }
@@ -271,6 +274,7 @@ Polymer Polymer::get_new_by_translation(int idx, std::vector<int> const &trans)
         p.set_repton_position(i, positions.at(i));
     
       p.set_repton_position(idx, this->tmp);
+      p.calculate_links();
       return p;
     }
     //jesli blad zwroc pustego polimera
@@ -283,8 +287,8 @@ int Polymer::translate_repton(int idx, std::vector<int> const &trans)
     { 
      for(int i=0; i<dim; i++)
          positions.at(idx).at(i) = tmp.at(i);
-    //TODO update links
      
+     update_links(idx); 
      
      return 1;
     }
@@ -318,7 +322,7 @@ int Polymer::copy_data(Polymer &p)
     if (this->nreptons != p.nreptons)
         return 0;
  
-    vector <int> *w; 
+    const vector <int> *w; 
     for(int i=0; i<nreptons; i++)
     {
         w = p.get_repton_position(i);
