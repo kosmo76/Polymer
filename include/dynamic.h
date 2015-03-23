@@ -70,6 +70,14 @@ public:
      */
     void set_rates( std::vector <double> parameters);
     
+    //! Metoda zwracająca wymiarowość układu
+    /*!
+     * Metoda zwracająca wartośc zmiennej prywatnej dim, która określa wymiarowość 
+     * modelu dynamiki. Zmienna ta jest ustawiana w konstruktorze
+     */
+    int get_dim();
+    
+    
 protected:
     
     std::vector <double> rates; //!wektor z rate-ami dla danego modelu

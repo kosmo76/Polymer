@@ -15,6 +15,10 @@ void Dynamic::set_rates( std::vector <double> rates)
    this->rates = rates;   
 }
 
+ int Dynamic::get_dim()
+ {
+   return this->dim;
+ }
 RouseDynamic::RouseDynamic(double r, double h, double c, double h_m, int dim) : Dynamic(dim)
 {
     rates.push_back(0.0); //rate dla zabronionego przejsca dla zachowania spojnosci

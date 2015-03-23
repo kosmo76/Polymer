@@ -39,9 +39,9 @@ void NearestNeighbour::initialize()
     vector <int> tmp;
     if ( dim == 1 )
     {
-        tmp.push_back(-1);
+        tmp.push_back(1);
         trans_vect.push_back(tmp);
-        tmp[0]=1;
+        tmp[0]=-1;
         trans_vect.push_back(tmp);
         nvectors = trans_vect.size();
         return;
@@ -84,9 +84,9 @@ void SecondNearestNeighbour::initialize()
     vector <int> tmp;
     if ( dim == 1 )
     {
-        tmp.push_back(-1);
+        tmp.push_back(1);
         trans_vect.push_back(tmp);
-        tmp[0]=1;
+        tmp[0]=-1;
         trans_vect.push_back(tmp);
         nvectors = trans_vect.size();
         return;

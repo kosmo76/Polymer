@@ -279,11 +279,17 @@ public:
      */
     int copy_data(Polymer &p);
     
-    
+    //! Metoda ustawiająca łańcuch polimerowy na losowej konfiguracji
+    /*!
+     * Metoda ustawia łańcuch polimerowy na jednej z mozliwych, wybranych  losowych konfiguracji
+     * w zależności od wymiarowości układu
+     */
+    void set_randomly();
    
 private:
     int dim;    //! Wymiarowość systemu
     int nreptons; //! Ilośc reptonów tworzących łańcuch
+    
     
     std::vector < std::vector <int> > positions; //! Wektor trzymający pozycje reptonów.
     std::vector <int> tmp; //! wektor pomocniczy, automatycznie ustawiany zgodnie z wymiarowością układu i wypełniany zerami

@@ -35,12 +35,13 @@ Polymer::Polymer(string repr, int dim)
     for(int i=0; i<nreptons; i++)
         this->positions.push_back(pos);
     
-    set_from_representation(repr);
     //wypelnij  wektor linkow
     for(int i=0; i<nreptons-1; i++)
         this->links.push_back(pos);
+
     //policz wektory linkow dla aktualnej konfiguracji
-    calculate_links();
+    set_from_representation(repr);
+    //calculate_links();
 }
 
 int Polymer::get_dim()
@@ -105,6 +106,7 @@ void Polymer::set_from_representation(std::string repr)
         }
         }
      }
+  calculate_links();
 }
 
 int Polymer::get_nreptons()
@@ -133,6 +135,8 @@ void Polymer::set_repton_position( int idx, vector<int> const & pos)
 { 
     for(int i=0; i<this->dim; i++)
         this->positions[idx][i] = pos[i]; 
+    //TODO tutaj jednak chyba pwinno byc update_links(idx)
+    
 }
 
 const std::vector<int> * Polymer::get_link_vector(int link_number)
@@ -329,4 +333,28 @@ int Polymer::copy_data(Polymer &p)
         set_repton_position(i,*w);
     }
     return 1;
+}
+
+void Polymer::set_randomly()
+{
+ std::string states, actual_state="";
+ int k; 
+ switch ( this->dim )
+ {
+     case 1:
+        states="srl";
+        break;
+     case 2:
+        states="surdl";
+        break;
+     default:
+        states="srl";
+ }
+ 
+ for(int i=0; i< this->get_nlinks(); i++)
+ {
+    k = int (frand() * states.size());
+    actual_state.push_back(states.at(k));
+ }
+ this->set_from_representation(actual_state);
 }
