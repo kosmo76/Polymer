@@ -202,12 +202,12 @@ void test_system_transition(int dim)
 void test_KMC(int dim)
 {
   NearestNeighbour trans_obj(dim);
-  RouseDynamic rouse(1, 0.5, 0, 0, dim);
-  KMCSimulationSystem s1("ssss", &trans_obj, &rouse);
+  RouseDynamic rouse(1, 0.0, 0, 0, dim);
+  KMCSimulationSystem s1("ss", &trans_obj, &rouse);
   
   int size = 81;
 
-  string stany[] = {"ssss", "sssr", "sssl", "ssrs", "ssrr", "ssrl", "ssls", "sslr", "ssll",
+  /*string stany[] = {"ssss", "sssr", "sssl", "ssrs", "ssrr", "ssrl", "ssls", "sslr", "ssll",
                     "srss", "srsr", "srsl", "srrs", "srrr", "srrl", "srls", "srlr", "srll",
                     "slss", "slsr", "slsl", "slrs", "slrr", "slrl", "slls", "sllr", "slll",
                     "rsss", "rssr", "rssl", "rsrs", "rsrr", "rsrl", "rsls", "rslr", "rsll",
@@ -217,6 +217,12 @@ void test_KMC(int dim)
                     "lrss", "lrsr", "lrsl", "lrrs", "lrrr", "lrrl", "lrls", "lrlr", "lrll",
                     "llss", "llsr", "llsl", "llrs", "llrr", "llrl", "llls", "lllr", "llll"
                     };
+ */
+  size = 25;
+  string stany[] = {"ss", "su", "sr","sd", "sl", "us", "uu", "ur", "ud", "ul",
+                    "rs", "ru", "rr","rd", "rl", "ds", "du", "dr", "dd", "dl",
+                    "ls", "lu", "lr","ld", "ll"};
+    
   int hist[size];
   for(int i=0; i<size; i++)
       hist[i]= 0;
@@ -255,7 +261,7 @@ main()
  srand(time(NULL));
  //test_system(1);
  //test_system_transition(1);
- test_KMC(1);
+ test_KMC(2);
  return 0;
 }
 
