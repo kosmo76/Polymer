@@ -255,23 +255,31 @@ std::vector <double> KMCSimulationSystem::get_rates_cum_sum()
   return rates_cum_sum;   
 }
 
-// 
-// 
-// KMCInFieldSimulationSystem::KMCInFieldSimulationSystem(int dim, int nreptons, Translation *trans, Dynamic * model, std::vector <double> eps):KMCSimulationSystem(dim, nreptons, trans, model)
-// {
-//   epsilon.assign(dim,0);
-//   for(int i=0; i<eps.size() && i<dim; i++)
-//     epsilon.at(i) = eps.at(i);
-// }
-// 
-// double KMCInFieldSimulationSystem::get_rate_modifier(int repton_idx, int trans_idx)
-// {
-//    vector<int> w = translation->get_translation(trans_idx);
-//    
-//    double tmp = 0;
-//    
-//    for(int i=0; i<epsilon.size(); i++)
-//         tmp += w.at(i)*epsilon.at(i);
-//    
-//    return exp(0.5*tmp);
-// }
+
+ KMCInFieldSimulationSystem::KMCInFieldSimulationSystem(int nreptons, Translation *trans, Dynamic * model, std::vector <double> eps):KMCSimulationSystem(nreptons, trans, model)
+ {
+  int dim = trans->get_dim();
+  epsilon.assign(dim,0);
+  for(int i=0; i<eps.size() && i<dim; i++)
+    epsilon.at(i) = eps.at(i);
+ }
+ 
+ KMCInFieldSimulationSystem::KMCInFieldSimulationSystem(std::string rep, Translation *trans, Dynamic * model, std::vector <double> eps):KMCSimulationSystem(rep, trans, model)
+ {
+  int dim = trans->get_dim();
+  epsilon.assign(dim,0);
+  for(int i=0; i<eps.size() && i<dim; i++)
+    epsilon.at(i) = eps.at(i);
+}
+
+double KMCInFieldSimulationSystem::get_rate_modifier(int repton_idx, int trans_idx)
+{
+   vector<int> w = translation->get_translation(trans_idx);
+   
+   double tmp = 0;
+   
+   for(int i=0; i<epsilon.size(); i++)
+        tmp += w.at(i)*epsilon.at(i);
+   
+   return exp(0.5*tmp);
+}

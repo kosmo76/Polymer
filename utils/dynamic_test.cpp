@@ -201,9 +201,9 @@ void test_system_transition(int dim)
 
 void test_KMC(int dim)
 {
-  NearestNeighbour trans_obj(dim);
-  RouseDynamic rouse(1, 0.0, 0, 0, dim);
-  KMCSimulationSystem s1("ss", &trans_obj, &rouse);
+  SecondNearestNeighbour trans_obj(dim);
+  RouseDynamic rouse(1.0, 0.2, 0.2, 0.2, dim);
+  KMCSimulationSystem s1("sss", &trans_obj, &rouse);
   
   int size = 81;
 
@@ -218,10 +218,22 @@ void test_KMC(int dim)
                     "llss", "llsr", "llsl", "llrs", "llrr", "llrl", "llls", "lllr", "llll"
                     };
  */
-  size = 25;
-  string stany[] = {"ss", "su", "sr","sd", "sl", "us", "uu", "ur", "ud", "ul",
-                    "rs", "ru", "rr","rd", "rl", "ds", "du", "dr", "dd", "dl",
-                    "ls", "lu", "lr","ld", "ll"};
+  size = 125;
+  string stany[] = {"sss", "ssu", "ssr","ssd", "ssl", "sus", "suu", "sur", "sud", "sul",
+                    "srs", "sru", "srr","srd", "srl", "sds", "sdu", "sdr", "sdd", "sdl",
+                    "sls", "slu", "slr","sld", "sll",
+                    "uss", "usu", "usr","usd", "usl", "uus", "uuu", "uur", "uud", "uul",
+                    "urs", "uru", "urr","urd", "url", "uds", "udu", "udr", "udd", "udl",
+                    "uls", "ulu", "ulr","uld", "ull",
+                    "rss", "rsu", "rsr","rsd", "rsl", "rus", "ruu", "rur", "rud", "rul",
+                    "rrs", "rru", "rrr","rrd", "rrl", "rds", "rdu", "rdr", "rdd", "rdl",
+                    "rls", "rlu", "rlr","rld", "rll",
+                    "dss", "dsu", "dsr","dsd", "dsl", "dus", "duu", "dur", "dud", "dul",
+                    "drs", "dru", "drr","drd", "drl", "dds", "ddu", "ddr", "ddd", "ddl",
+                    "dls", "dlu", "dlr","dld", "dll",
+                    "lss", "lsu", "lsr","lsd", "lsl", "lus", "luu", "lur", "lud", "lul",
+                    "lrs", "lru", "lrr","lrd", "lrl", "lds", "ldu", "ldr", "ldd", "ldl",
+                    "lls", "llu", "llr","lld", "lll"};
     
   int hist[size];
   for(int i=0; i<size; i++)
@@ -229,12 +241,12 @@ void test_KMC(int dim)
       
   vector <int> tmp;
   
-  for(int i=0; i<142000; i++)
+  for(int i=0; i<62000; i++)
   {
     tmp = s1.choose_transition();
     s1.move_repton(tmp.at(0), tmp.at(1));
   }
-  long iter=2000000;
+  long iter=4000000;
   string stan ;
   for(long i=0; i<iter; i++)
   {

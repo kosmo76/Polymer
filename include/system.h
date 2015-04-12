@@ -86,15 +86,16 @@ public:
     void prepare_transision_list();
     
 };
-/*
+
 class KMCInFieldSimulationSystem: public KMCSimulationSystem
 {
 public:
-    KMCInFieldSimulationSystem(int dim, int nreptons, Translation *trans, Dynamic * model, std::vector <double> eps);
+    KMCInFieldSimulationSystem(int nreptons, Translation *trans, Dynamic * model, std::vector <double> eps);
+    KMCInFieldSimulationSystem(std::string rep, Translation *trans, Dynamic * model, std::vector <double> eps);
     double get_rate_modifier(int repton_idx, int trans_idx);
     
 public:
     std::vector <double> epsilon;
-};*/
+};
 #endif
 
