@@ -41,7 +41,6 @@ Polymer::Polymer(string repr, int dim)
 
     //policz wektory linkow dla aktualnej konfiguracji
     set_from_representation(repr);
-    //calculate_links();
 }
 
 int Polymer::get_dim()
@@ -136,14 +135,12 @@ void Polymer::set_repton_position( int idx, vector<int> const & pos)
     for(int i=0; i<this->dim; i++)
         this->positions[idx][i] = pos[i]; 
     //TODO tutaj jednak chyba pwinno byc update_links(idx)
-    
+    //ale jest problem z innymi metodami, ktore kopiuja informacje !!!
 }
 
 const std::vector<int> * Polymer::get_link_vector(int link_number)
 {
     return & this->links.at(link_number);
-//     diff(positions.at(link_number+1), positions.at(link_number), tmp);
-//     return tmp;
 }
 
 
@@ -246,24 +243,27 @@ int Polymer::get_prev_idx(int idx)
 int Polymer::check_translation(int idx, std::vector<int> const &trans)
 {
     int prev_idx, next_idx;
-     
+    
     prev_idx = get_prev_idx(idx);
     next_idx = get_next_idx(idx);
  
     add( positions.at(idx), trans, this->tmp);
- 
-    if (prev_idx >= 0)
+    
+     if (prev_idx >= 0)
      {
-        if ( get_distance(this->tmp, positions.at(prev_idx))> 1.1 )
+         if ( get_square_distance(this->tmp, positions.at(prev_idx))> 1.0 )
+         {
+             return 0;
+         }
+      }
+      else
+      {
+        if (next_idx >= 0)
         {
-            return 0;
+         if (get_square_distance(this->tmp, positions.at(next_idx))> 1.0)
+             return 0;
         }
-     }
-     if (next_idx >= 0)
-     {
-        if (get_distance(this->tmp, positions.at(next_idx))> 1.1)
-            return 0;
-     }
+      }
      
     return 1;
 }
@@ -285,12 +285,19 @@ Polymer Polymer::get_new_by_translation(int idx, std::vector<int> const &trans)
     return Polymer(0,dim);
 }
 
+int Polymer::copy_by_translation(int idx, std::vector<int> const &trans, Polymer &p)
+{
+    //TODO - tutaj moznaby zoptymalizoać troche i nie kopiowac jesli transakcja nie jest mozliwa
+    copy_data(p);
+    return translate_repton(idx, trans);
+}
+
 int Polymer::translate_repton(int idx, std::vector<int> const &trans)
 {
-    if ( check_translation(idx, trans))
+    if (check_translation(idx, trans))
     { 
-     for(int i=0; i<dim; i++)
-         positions.at(idx).at(i) = tmp.at(i);
+      for(int i=0; i<dim; i++)
+          positions.at(idx).at(i) = tmp.at(i);
      
      update_links(idx); 
      
@@ -331,6 +338,13 @@ int Polymer::copy_data(Polymer &p)
     {
         w = p.get_repton_position(i);
         set_repton_position(i,*w);
+    }
+    //przekopiuj linki
+    for(int i=0; i<p.get_nlinks(); i++)
+    {
+      w = p.get_link_vector(i);
+      for( int j=0; j<w->size(); j++)
+        links.at(i).at(j) = w->at(j);
     }
     return 1;
 }

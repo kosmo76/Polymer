@@ -29,6 +29,8 @@ public:
      */
     std::vector <int> get_translation(int idx);
     
+    const std::vector<int> * get_translation_pointer(int idx);
+    
     //! Metoda zwracająca wymiarowość.
     /*!
      * \return liczba określająca wymiarowość układu (ilość współrzędnych wektora translacji)

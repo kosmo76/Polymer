@@ -24,10 +24,12 @@ int get_state_number( string actual, vector <string> &states)
 }
 void check_trans(Polymer &p, vector <string> &states, double reptation, double hernia, double cross, double migration, int print_type)
 {
+    //wybierz model translacji - 4 lub 8 kierunkow
     SecondNearestNeighbour trans_obj(p.get_dim());
+    //oraz wybierz rodzaj dynamiki 
     RouseDynamic rouse(reptation, hernia, cross, migration, p.get_dim());
  
-    Polymer p_tmp(p.get_nreptons(), 0);
+    Polymer p_tmp(p.get_nreptons(), p.get_dim());
     vector< int>  tmp;
     
     int type;
@@ -36,13 +38,15 @@ void check_trans(Polymer &p, vector <string> &states, double reptation, double h
     else
         cout <<get_state_number(p.get_representation(), states)<<":";
     
+    //wez kazdego reptona i zrob na nim kazda mozliwa translacje
     for(int r=0; r<p.get_nreptons(); r++)
     {
         for(int idx = 0; idx < trans_obj.get_nvectors(); idx++)
         {
             tmp = trans_obj.get_translation(idx);
-            p_tmp = p.get_new_by_translation(r,tmp);
-            if (p_tmp.get_nreptons() != 0)
+            //sprawdz czy translacja daje poprawny stan
+            p_tmp.copy_by_translation(r, tmp, p);
+            if (p_tmp.get_nreptons() != 0) //TODO to zostalo chyab ze starego podejsci amo mozna to wywalic, bo zawsze jest liczba reponow > 0
             {
                 type =  rouse.get_transition_type(p, p_tmp);
                 if ( type != 0 )
@@ -58,7 +62,7 @@ void check_trans(Polymer &p, vector <string> &states, double reptation, double h
 }
 
 
-//Ponizsze dwie funkcje sa napisane na szybko i nie nadaja sie do wiekszej dlugosci polimerow !!!
+//TODO Ponizsze dwie funkcje sa napisane na szybko i nie nadaja sie do wiekszej dlugosci polimerow bo wielokrotnie kopiuje obiekty klasy vector a to zle !!!
 vector <string> get_states_from_state( string base, string init)
 {
   vector <string> tmp;
@@ -75,6 +79,7 @@ vector <string> get_states_from_state( string base, string init)
 vector <string> generate_all_states(int nlink, int dim)
 {
   string start="", base;
+  //ustal mozliwe polozenia linku 
   switch (dim)
   {
       case 1:
@@ -114,12 +119,15 @@ vector <string> generate_all_states(int nlink, int dim)
 void generowanie_macierzy_test(int nlinks, int dim, double reptation, double hernia, double cross, double migration, int print_type)
 {
     vector <string> test;
+    //wygeneruj wszystkie mozliwe stany dla ukladu
     test = generate_all_states(nlinks, dim);
     
     
     for(int i=0; i< test.size(); i++)
     {
+        //stworz polimera z danego stanu
         Polymer p(test.at(i), dim);
+        //sprawdz wszystkei przejscia - nowe konfiguracje powtale z aktualnej
         check_trans(p, test, reptation, hernia, cross, migration, print_type);
     }
     
@@ -129,12 +137,17 @@ void generowanie_macierzy_test(int nlinks, int dim, double reptation, double her
 main()
 {
  srand(time(NULL));
+//ustaw raty-y dla roznych form przejsc
  double reptation=1.0;
  double hernia=0.2;
  double cross=0.2;
  double migration=0.2;
- int links=2;
+ 
+ //ilosc linkow 
+ int links=3;
+ //wymiarowosc ukladu
  int dim = 2;
+ //rodzaj output-u
  int print_type = 0; //0 - dla macierzy w pythnie, 1 do czytania 
  
  generowanie_macierzy_test(links, dim, reptation, hernia, cross, migration, print_type);

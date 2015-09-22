@@ -215,6 +215,8 @@ public:
      */
     Polymer get_new_by_translation(int idx, std::vector<int> const &trans);
     
+    int copy_by_translation(int idx, std::vector<int> const &trans, Polymer &p);
+    
     //! Metoda dokonująca przejścia do nowej konfiguracji poprzez translacje reptonu.
     /*!
      * Metoda dokonuje translacji zadanego reptonu o zadany wektor translacji.

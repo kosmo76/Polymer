@@ -14,6 +14,11 @@ vector <int> Translation::get_translation(int idx)
 {
    return trans_vect.at(idx);   
 }
+ 
+const std::vector<int> * Translation::get_translation_pointer(int idx)
+{
+   return &trans_vect.at(idx);    
+}
     
 int Translation::get_dim()
 {

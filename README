@@ -1,3 +1,7 @@
-Oprogramowanie (bardziej zabawa niż poważny soft) do symulacji
-polimerów w ramach KMC.
-Test
+Oprogramowanie (bardziej zabawa niż poważny soft) do symulacji polimerów w ramach KMC.
+
+Kompilacja:
+
+g++ -O3 input.cpp  src/*.cpp -o output
+
+gdzie input.cpp to nazwa programu wykorzystującego oprogramowania (przykładowo plik **generate_stochastic_matrix.cpp** zwracajacy stany z możliwymi przejściami i ich rate-ami)

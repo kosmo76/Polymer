@@ -39,12 +39,14 @@ class SimulationSystem
       virtual std::vector <int>  choose_transition() = 0;
       
   protected:
-      
       void initialize_polymer();
       void initialize_matrix();
       void update_matrix(int repton_idx, int range=1);
       
       std::vector < std::vector <int> > matrix;
+      const std::vector <int> *w;
+      std::vector <int> tmp;
+      Polymer *new_polymer;
 };
 
 class TestSimulationSystem: public SimulationSystem
