@@ -10,9 +10,12 @@ data = plik.readlines()
 size =  len(data)
 
 matrix = np.zeros((size, size))
+representations = []
 for idx_1, linia in enumerate(data):
-    print idx_1," -------------"
-    transitions =  linia.split(':')[-1].lstrip().rstrip()
+    #print idx_1," -------------"
+    parsed_data = linia.split(':')
+    transitions = parsed_data[-1].lstrip().rstrip()
+    representations.append(parsed_data[0].split()[0])
     tmp = transitions.split(' ')
     for i in tmp:
         a,b = i.split('-')
@@ -30,5 +33,8 @@ I = np.identity(size)
 B,b = np.ones((size, size)), np.ones((size,1))
 
 k = np.linalg.solve( matrix - I + B, b)       
-print k
-print k.sum()
+for idx, val  in enumerate(k):
+    print representations[idx], val
+#print k
+print "Suma wszystkich = ", k.sum()
+#print representations

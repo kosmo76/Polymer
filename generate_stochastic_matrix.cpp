@@ -36,7 +36,7 @@ void check_trans(Polymer &p, vector <string> &states, double reptation, double h
     if (print_type==1)
         cout<<"Start : "<<p.get_representation()<<endl;
     else
-        cout <<get_state_number(p.get_representation(), states)<<":";
+        cout <<p.get_representation()<<" "<<get_state_number(p.get_representation(), states)<<":";
     
     //wez kazdego reptona i zrob na nim kazda mozliwa translacje
     for(int r=0; r<p.get_nreptons(); r++)
