@@ -235,10 +235,12 @@ void KMCSimulationSystem::prepare_transision_list()
              trate = model->get_transition_rate(val);
              factor = get_rate_modifier(rep_idx, trans_idx);
              trate = trate * factor;
+             //std::cout<<"repton "<<rep_idx<<"  trans "<<trans_idx<<" rate  "<<trate<<"  "<<translation->get_translation(trans_idx).at(0)<<"\n";
              sum += trate;
              rates_cum_sum.push_back(sum);
           }
        }
+       //std::cout <<"\n\n";
    }
 }
 
@@ -280,13 +282,18 @@ std::vector <double> KMCSimulationSystem::get_rates_cum_sum()
   return rates_cum_sum;   
 }
 
-
- KMCInFieldSimulationSystem::KMCInFieldSimulationSystem(int nreptons, Translation *trans, Dynamic * model, std::vector <double> eps):KMCSimulationSystem(nreptons, trans, model)
+/*************************************************
+  KINETIC MONTE CARLO IN EXTERNAL FIELD
+/************************************************/
+KMCInFieldSimulationSystem::KMCInFieldSimulationSystem(int nreptons, Translation *trans, Dynamic * model, std::vector <double> eps):KMCSimulationSystem(nreptons, trans, model)
  {
+     this->epsilon = eps;
  }
  
- KMCInFieldSimulationSystem::KMCInFieldSimulationSystem(std::string rep, Translation *trans, Dynamic * model, std::vector <double> eps):KMCSimulationSystem(rep, trans, model)
+KMCInFieldSimulationSystem::KMCInFieldSimulationSystem(std::string rep, Translation *trans, Dynamic * model, std::vector <double> eps):KMCSimulationSystem(rep, trans, model)
  {
+     this->epsilon = eps;
+     
 }
 
 double KMCInFieldSimulationSystem::get_rate_modifier(int repton_idx, int trans_idx)

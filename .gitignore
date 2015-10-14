@@ -23,3 +23,7 @@
 #tmp directory
 tmp
 doc
+
+#tmp files
+*~
+*#
