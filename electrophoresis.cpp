@@ -72,21 +72,21 @@ main()
  int nreptons = 5;           //ilosc repotonow
 //ustaw parametry symulacji
  long term_steps = 10000;   //termalizacja
- long steps = 1000000;      //dlugosc symulacji po termalizacji
+ long steps = 100000;      //dlugosc symulacji po termalizacji
   
  //parametry modelu
  double rate_r = 1.0, rate_h=0.0, rate_c=0.0, rate_m=0.0;
  double eps_x = 1.4, eps_y=0;
  
- vector <double> v_tmp;
- 
- vector < vector <double> > velocity;
- int runs = 100;
+ vector <double> v_tmp(dim, 0);
+    
+ int runs = 1000;
+ vector < vector <double> > velocity(runs, v_tmp);
  
  for(int i=0; i<runs; i++)
  {
  v_tmp = simulate_system(dim, nreptons, term_steps, steps, rate_r, rate_h, rate_c, rate_m, eps_x, eps_y);
- velocity.push_back(v_tmp);
+ velocity.at(i) = v_tmp;
  }
  
  
