@@ -11,6 +11,7 @@
 
 using std::vector;
 using std::string;
+using std::fstream;
 using std::log;
 using std::exp;
 

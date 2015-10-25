@@ -98,6 +98,7 @@ public:
     
 public:
     std::vector <double> epsilon;
+    std::vector <double> B;
 };
 #endif
 

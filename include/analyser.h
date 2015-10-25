@@ -41,5 +41,5 @@ public:
   
   static const std::string states[SIZE];
 };
-#endif
 
+#endif

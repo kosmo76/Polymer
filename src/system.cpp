@@ -220,7 +220,7 @@ void KMCSimulationSystem::prepare_transision_list()
    int val;
    double trate;
    double factor;
-   
+   //std::cout << polymer->get_representation()<<"\n";
    for(int rep_idx = 0; rep_idx < nreptons; rep_idx++)
    {
        for(int trans_idx = 0; trans_idx < ntrans; trans_idx++)
@@ -293,8 +293,7 @@ KMCInFieldSimulationSystem::KMCInFieldSimulationSystem(int nreptons, Translation
 KMCInFieldSimulationSystem::KMCInFieldSimulationSystem(std::string rep, Translation *trans, Dynamic * model, std::vector <double> eps):KMCSimulationSystem(rep, trans, model)
  {
      this->epsilon = eps;
-     
-}
+ }
 
 double KMCInFieldSimulationSystem::get_rate_modifier(int repton_idx, int trans_idx)
 {
@@ -303,7 +302,7 @@ double KMCInFieldSimulationSystem::get_rate_modifier(int repton_idx, int trans_i
    double tmp = 0;
    
    for(int i=0; i<epsilon.size(); i++)
-        tmp += w.at(i)*epsilon.at(i);
+    tmp += w.at(i)*epsilon.at(i);
    
    return exp(0.5*tmp);
 }
