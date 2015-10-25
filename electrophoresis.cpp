@@ -65,7 +65,7 @@ vector <double> simulate_system( int dim, int nreptons, long term_steps, long st
 }
 
 
-main()
+main(int argc, char * argv[])
 {
  srand(time(NULL));
  int dim = 2;                //wymiarowosc ukladu
@@ -78,9 +78,11 @@ main()
  double rate_r = 1.0, rate_h=0.0, rate_c=0.0, rate_m=0.0;
  double eps_x = 1.4, eps_y=0;
  
+ eps_x = atof(argv[2]);
+ nreptons = atoi(argv[1]);
  vector <double> v_tmp(dim, 0);
     
- int runs = 1000;
+ int runs = 10;
  vector < vector <double> > velocity(runs, v_tmp);
  
  for(int i=0; i<runs; i++)
@@ -104,7 +106,7 @@ for(int k=0; k<velocity.size(); k++)
    sum_x = sum_x + velocity.at(k).at(0);
    sum_x2 = sum_x2 + velocity.at(k).at(0)*velocity.at(k).at(0);
 }
-
+cout << "\n\nKroki " << steps << "   Runs "<< runs << "  EPS = "<< eps_x<<"  Reptons = "<<nreptons<<endl;
 cout << "Wynik " << sum_x/velocity.size() << " sig^2 = "<<sum_x2/velocity.size() - (sum_x/velocity.size())*(sum_x/velocity.size())<<endl;
  return 0;
 }
