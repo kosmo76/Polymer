@@ -75,9 +75,9 @@ void SimulationSystem::initialize_polymer()
 void SimulationSystem::initialize_matrix()
 {
     //stworz macierz translacji z zerami - kolumny to numery translacji, wiersze to reptony
-    vector <int> tmp (translation->get_nvectors(),0.0);
+    vector <int> tmp_t (translation->get_nvectors(),0.0);
     matrix.clear();
-    matrix.resize(polymer->get_nreptons(), tmp);
+    matrix.resize(polymer->get_nreptons(), tmp_t);
     
     //Zainicjuj macierz translacji zgodnie z aktualmnym stanem polimeru
     //do tego celu musimy miec obiket reprezentujacy polimer po przejsciu bo 
@@ -183,21 +183,25 @@ vector <int> TestSimulationSystem::choose_transition()
  {
      //przygotowanie vektora trzymajacego wszystkie mozliwe przejscia - chodzi o to, zeby go nie reallokowac
      tmp.assign(trans->get_dim(), 0);
+     std::vector <int> tmp_l(2,0);
+     
      transitions.clear();
      int ntrans = trans->get_nvectors();
      for(int i = 0; i< nreptons * ntrans + 1; i++)
-         transitions.push_back(tmp);
+         transitions.push_back(tmp_l);
  }
  
   KMCSimulationSystem::KMCSimulationSystem(string repr, Translation *trans, Dynamic * model): SimulationSystem(repr, trans,model)
  {
      //przygotowanie vektora trzymajacego wszystkie mozliwe przejscia
-     tmp.assign(trans->get_dim(), 0);
+      tmp.assign(trans->get_dim(), 0);
+      std::vector <int> tmp_l(2,0);
+     
      transitions.clear();
      int nreptons = this->polymer->get_nreptons();
      int ntrans = trans->get_nvectors();
      for(int i = 0; i< nreptons * ntrans + 1; i++)
-         transitions.push_back(tmp);
+         transitions.push_back(tmp_l);
  }
 
  double KMCSimulationSystem::get_rate_modifier(int repton_idx, int trans_idx)
@@ -214,23 +218,21 @@ void KMCSimulationSystem::prepare_transision_list()
    int ntrans = translation->get_nvectors();
   
    tmp.clear();
-   tmp.push_back(0);
-   tmp.push_back(0);
+   tmp.assign(polymer->get_dim(), 0);
    
    int val;
    double trate;
    double factor;
    //std::cout << polymer->get_representation()<<"\n";
    for(int rep_idx = 0; rep_idx < nreptons; rep_idx++)
-   {
+   { 
        for(int trans_idx = 0; trans_idx < ntrans; trans_idx++)
        {
           val = matrix.at(rep_idx).at(trans_idx);
           if( val != 0)
-          {  
+          { 
              transitions.at(start).at(0) = rep_idx;
              transitions.at(start).at(1) = trans_idx;
-             
              start = start + 1;
              trate = model->get_transition_rate(val);
              factor = get_rate_modifier(rep_idx, trans_idx);
@@ -299,10 +301,10 @@ double KMCInFieldSimulationSystem::get_rate_modifier(int repton_idx, int trans_i
 {
    vector<int> w = translation->get_translation(trans_idx);
    
-   double tmp = 0;
+   double tmp_w = 0;
    
-   for(int i=0; i<epsilon.size(); i++)
-    tmp += w.at(i)*epsilon.at(i);
+   for(int i=0; i<translation->get_dim(); i++)
+    tmp_w += w.at(i)*epsilon.at(i);
    
-   return exp(0.5*tmp);
+   return exp(0.5*tmp_w);
 }

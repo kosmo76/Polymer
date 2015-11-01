@@ -26,7 +26,6 @@ vector <double> simulate_system( int dim, int nreptons, long term_steps, long st
  NearestNeighbour trans_obj(dim);
  RouseDynamic rouse(rate_r, rate_h, rate_c, rate_m, dim);
  KMCInFieldSimulationSystem system(nreptons, &trans_obj, &rouse, eps);
- 
  vector <int> tmp;
  vector <double> cms, start_cms, end_cms;
  //termalizacja
@@ -37,7 +36,6 @@ vector <double> simulate_system( int dim, int nreptons, long term_steps, long st
  }
  
  //wlasciwa symulacja - zapisujemy do pliku, i przy okazji zliczamy
- 
  double start_time = 0;
  double kmc_time, total_time;
  
@@ -72,7 +70,7 @@ main(int argc, char * argv[])
  int nreptons = 5;           //ilosc repotonow
 //ustaw parametry symulacji
  long term_steps = 10000;   //termalizacja
- long steps = 100000;      //dlugosc symulacji po termalizacji
+ long steps = 1000;      //dlugosc symulacji po termalizacji
   
  //parametry modelu
  double rate_r = 1.0, rate_h=0.0, rate_c=0.0, rate_m=0.0;
@@ -91,7 +89,7 @@ main(int argc, char * argv[])
  velocity.at(i) = v_tmp;
  }
  
- 
+ cout <<"EEEEEEEEEEEEEEEEEEEEE"<<endl;
  for(int k=0; k<velocity.size(); k++)
  {
     for(int i=0; i<dim; i++)
