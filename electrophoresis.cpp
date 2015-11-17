@@ -41,7 +41,7 @@ vector <double> simulate_system( int dim, int nreptons, long term_steps, long st
  
  start_cms = system.polymer->get_cms_coord();
  
- for(long i=0; i< term_steps; i++)
+ for(long i=0; i< steps; i++)
  { 
    tmp = system.choose_transition();
    system.move_repton(tmp.at(0), tmp.at(1));      
@@ -63,24 +63,30 @@ vector <double> simulate_system( int dim, int nreptons, long term_steps, long st
 }
 
 
+//PARAMETRY
+// nreptons, eps_x, steps, runs
 main(int argc, char * argv[])
 {
  srand(time(NULL));
- int dim = 2;                //wymiarowosc ukladu
- int nreptons = 5;           //ilosc repotonow
+ int dim = 1;                //wymiarowosc ukladu
+ int nreptons = 7;           //ilosc repotonow
 //ustaw parametry symulacji
- long term_steps = 10000;   //termalizacja
- long steps = 1000;      //dlugosc symulacji po termalizacji
+ long term_steps = 100000;   //termalizacja
+ long steps = 4000000;      //dlugosc symulacji po termalizacji
   
  //parametry modelu
  double rate_r = 1.0, rate_h=0.0, rate_c=0.0, rate_m=0.0;
  double eps_x = 1.4, eps_y=0;
- 
+
+
+ steps = atol(argv[3]); 
  eps_x = atof(argv[2]);
  nreptons = atoi(argv[1]);
  vector <double> v_tmp(dim, 0);
     
- int runs = 10;
+ int runs = 2000;
+ runs = atoi(argv[4]);
+
  vector < vector <double> > velocity(runs, v_tmp);
  
  for(int i=0; i<runs; i++)
@@ -89,7 +95,7 @@ main(int argc, char * argv[])
  velocity.at(i) = v_tmp;
  }
  
- cout <<"EEEEEEEEEEEEEEEEEEEEE"<<endl;
+ cout <<"#Predkosci z poszczegolnych runow"<<endl;
  for(int k=0; k<velocity.size(); k++)
  {
     for(int i=0; i<dim; i++)
@@ -98,6 +104,7 @@ main(int argc, char * argv[])
  }
  
  //policz srednie
+ //TODO - jesi wiecej wymiarow to tutaj uwaga
 double sum_x = 0, sum_x2 = 0;
 for(int k=0; k<velocity.size(); k++)
 {
