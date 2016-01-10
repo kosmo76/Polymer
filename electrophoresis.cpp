@@ -29,15 +29,18 @@ vector <double> simulate_system( int dim, int nreptons, long term_steps, long st
  vector <int> tmp;
  vector <double> cms, start_cms, end_cms;
  //termalizacja
+ //ustaw epsilony na zero
+ double eps_i = system.epsilon.at(0);
+ system.epsilon.at(0)=0.0;
  for(long i=0; i< term_steps; i++)
  { 
    tmp = system.choose_transition();
    system.move_repton(tmp.at(0), tmp.at(1));      
  }
- 
+ system.epsilon.at(0) = eps_i;
  //wlasciwa symulacja - zapisujemy do pliku, i przy okazji zliczamy
  double start_time = 0;
- double kmc_time, total_time;
+ double kmc_time, total_time=0.0;
  
  start_cms = system.polymer->get_cms_coord();
  
