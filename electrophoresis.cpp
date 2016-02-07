@@ -30,14 +30,14 @@ vector <double> simulate_system( int dim, int nreptons, long term_steps, long st
  vector <double> cms, start_cms, end_cms;
  //termalizacja
  //ustaw epsilony na zero
- double eps_i = system.epsilon.at(0);
- system.epsilon.at(0)=0.0;
+ //double eps_i = system.epsilon.at(0);
+ // system.epsilon.at(0)=0.0;
  for(long i=0; i< term_steps; i++)
  { 
    tmp = system.choose_transition();
    system.move_repton(tmp.at(0), tmp.at(1));      
  }
- system.epsilon.at(0) = eps_i;
+ //system.epsilon.at(0) = eps_i;
  //wlasciwa symulacja - zapisujemy do pliku, i przy okazji zliczamy
  double start_time = 0;
  double kmc_time, total_time=0.0;
@@ -89,6 +89,7 @@ main(int argc, char * argv[])
     
  int runs = 2000;
  runs = atoi(argv[4]);
+ rate_h = atof(argv[5]);
 
  vector < vector <double> > velocity(runs, v_tmp);
  
